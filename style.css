@@ -19,6 +19,11 @@ html, body {
     font-family: 'Nanum Gothic', sans-serif;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 input {
     outline: none;
 }
@@ -115,6 +120,44 @@ header .container {
 }
 
 /* image-gallery */
+.img-not-found {
+    display: flex;
+    text-align: center;
+    margin-top: 70px;
+    display: none;
+}
+
+.img-not-found .row {
+    display: inline-block;
+}
+
+.img-not-found .row div:nth-child(2) {
+    font-size: 54px;
+    font-weight: bolder;
+    margin-bottom: 8px;
+}
+
+.img-not-found .row div:nth-child(3) {
+    font-size: 20px;
+    font-weight: bolder;
+    margin-bottom: 28px;
+}
+
+.img-not-found .row div:nth-child(4) {
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+.img-not-found img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+}
+
+.img-found {
+    display: block;
+}
+
 .image-gallery .no-image {
     display: none;
     padding: 50px 0 50px 0;
