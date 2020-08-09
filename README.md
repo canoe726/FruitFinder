@@ -25,9 +25,26 @@ FruitFinder - 검색, 무한 스크롤, 모달창 기능을 가진 과일 검색
 <div>
   <img width="45%" src="https://user-images.githubusercontent.com/36183001/89730867-9d1e5780-da7d-11ea-9084-f67f9beef0bc.gif">
   &nbsp;&nbsp;&nbsp;
-  <img width="45%" src="https://user-images.githubusercontent.com/36183001/89730729-76135600-da7c-11ea-961c-08972cd78678.gif">
+  <img width="45%" src="https://user-images.githubusercontent.com/36183001/89730698-13ba5580-da7c-11ea-9686-df75a3a99ea3.gif">
 </div>
 
 > apple 검색한 결과, 검색한 결과가 존재하지 않음 (404 Not Found)
 
+<div>
+  <img width="45%" src="https://user-images.githubusercontent.com/36183001/89730934-29307f00-da7e-11ea-9d6d-435b29d3d00e.gif">
+  &nbsp;&nbsp;&nbsp;
+  <img width="45%" src="https://user-images.githubusercontent.com/36183001/89730997-98a66e80-da7e-11ea-9c05-f897c58c16e2.gif">
+</div>
+
+> 검색한 키워드 모두 제거 (단일 제거도 가능), 무한 스크롤 (Lazy Loading)
+
+<div>
+  <img width="45%" src="https://user-images.githubusercontent.com/36183001/89731095-592c5200-da7f-11ea-9f79-52abbb9a28c4.gif">
+</div>
+
+> 모바일 화면
+
+### 5. 예외 처리
+1. 검색어 입력이 없을 시 alert 창 띄움
+2. 더이상 이미지를 로드할 수 없을 때 '더 이상 이미지가 없습니다' 텍스트 생성
 
