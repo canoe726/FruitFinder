@@ -71,6 +71,20 @@ function findFruit() {
     }
 }
 
+function getScrollTop() {
+    return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+}
+
+function getDocumentHeight() {
+    const body = document.body;
+    const html = document.documentElement;
+
+    return Math.max(
+        body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight
+    );
+}
+
 /* infinite scroll, lazy loading */
 document.addEventListener('DOMContentLoaded', function() {
     var lazyLoadTimeOut;
@@ -84,17 +98,18 @@ document.addEventListener('DOMContentLoaded', function() {
             var loader = document.querySelector('.loader-container');
             loader.style.display = 'block';
 
-            var sbHeight = (window.innerHeight * (window.innerHeight / document.body.offsetHeight));
-            var curScrollY = window.pageYOffset + sbHeight;
-            var windowHeight = document.body.scrollHeight * 0.65;
+            var scrollTop = getScrollTop();
+            var documentHeight = getDocumentHeight();
+            var checkHeight = documentHeight - window.innerHeight - 100;
 
             if(imgLinksIdx === imgLinks.length) {
                 var no_image_text = document.querySelector('.no-image');
                 no_image_text.style.display = 'block';
+                loader.style.display = 'none';
                 return false;
             }
 
-            if(curScrollY >= windowHeight) {
+            if(scrollTop >= checkHeight) {
                 if(imgLinksIdx + 4 < imgLinks.length) {
                     var newIdx = imgLinksIdx + 4;
                     for(var i=imgLinksIdx; i<newIdx; i++) {
@@ -114,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
                 } else {
                     imgLinksIdx = imgLinks.length;
-        
                 }
             }
             loader.style.display = 'none';
@@ -162,6 +176,8 @@ function clickOutBoundModal(e) {
         modal.style.display = 'none';
     }
 }
+
+/* search fruit */
 
 
 /* refresh web storage */
