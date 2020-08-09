@@ -1,16 +1,33 @@
-var imgLinksIdx = 8;
 var imgLinks = [];
 var searchLinks = [];
 var no_image_text = document.querySelector('.no-image');
 var loader = document.querySelector('.loader-container');
 var imgNotFound = document.querySelector('.img-not-found');
 var imgFound = document.querySelector('.img-found');
+var gallery = document.querySelector('.img-found .card-container');
 
 window.onclick = function(event) {
     clickOutBoundModal(event);
 }
 
 getImageLinks();
+
+function modeChange(elem) {
+    console.log(elem.innerHTML);
+
+    var mode = elem.innerHTML;
+
+    if(mode === 'BLACK MODE') {
+        elem.innerHTML = 'WHITE MODE';
+        
+        document.querySelector('html').style.backgroundColor = 'dimgrey';
+
+    } else {
+        elem.innerHTML = 'BLACK MODE';
+
+        document.querySelector('html').style.backgroundColor = 'white';
+    }
+}
 
 function shuffle(array) {
     var ret = array;
@@ -47,7 +64,6 @@ makeCardGallery(imgLinks);
 function makeCardGallery(img) {
     var imgIdx = 8;
 
-    var gallery = document.querySelector('.img-found .card-container');
     var i;
     for(i=0; i<imgIdx; i++) {
         var html = `
@@ -70,8 +86,11 @@ function pressedKeyboard() {
     }
 }
 
-function deleteKeyword() { 
-    alert('delete');
+function deleteKeyword(elem) {
+    var curElem = elem;
+    elem.parentNode.removeChild(curElem);
+
+    searchFruit();
 }
 
 function searchFruit() {
@@ -81,26 +100,32 @@ function searchFruit() {
 
     var keywords = document.querySelectorAll('.prev-search');
 
-    var i, j;
-    for(i=0; i<imgLinks.length; i++) {
-        for(j=0; j<keywords.length; j++) {
-            if(imgLinks[i].title === keywords[j].innerHTML) {
-                searchLinks.push(imgLinks[i]);
-            }
-        }
-    }
-
-    if(searchLinks.length === 0) {
-        notFoundImage();
+    if(keywords.length === 0) {
+        foundImage();
+        gallery.innerHTML = '';
+        makeCardGallery(imgLinks);
 
     } else {
-        loader.style.display = 'block';
-
-        var gallery = document.querySelector('.img-found .card-container');
-        gallery.innerHTML = '';
-        makeCardGallery(searchLinks);
-
-        loader.style.display = 'none';
+        var i, j;
+        for(i=0; i<imgLinks.length; i++) {
+            for(j=0; j<keywords.length; j++) {
+                if(imgLinks[i].title === keywords[j].innerHTML) {
+                    searchLinks.push(imgLinks[i]);
+                }
+            }
+        }
+    
+        if(searchLinks.length === 0) {
+            notFoundImage();
+    
+        } else {
+            loader.style.display = 'block';
+    
+            gallery.innerHTML = '';
+            makeCardGallery(searchLinks);
+    
+            loader.style.display = 'none';
+        }
     }
 }
 
@@ -126,9 +151,8 @@ function removeKeywords() {
 
     var keywordsClass = document.querySelector('.keywords');
     keywordsClass.innerHTML = '';
-    keywordsClass.innerHTML += `<button class="del-search" type="button" onclick="removeKeywords();">검색어 삭제</button>`;
+    keywordsClass.innerHTML += `<button class="del-search" type="button" onclick="removeKeywords();">모든 검색어 삭제</button>`;
     
-    var gallery = document.querySelector('.img-found .card-container');
     gallery.innerHTML = '';
     makeCardGallery(imgLinks);
 }
@@ -203,7 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     for(var i=cardLength; i<newIdx; i++) {
-                        var gallery = document.querySelector('.card-container');
                         var html = `
                         <div class="card">
                             <img onclick="showModal(this);" src="` + searchLinks[i].link + `" alt="` + imgLinks[i].desc + `"/>
@@ -231,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     for(var i=cardLength; i<newIdx; i++) {
-                        var gallery = document.querySelector('.card-container');
                         var html = `
                         <div class="card">
                             <img onclick="showModal(this);" src="` + imgLinks[i].link + `" alt="` + imgLinks[i].desc + `"/>

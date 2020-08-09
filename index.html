@@ -10,7 +10,7 @@
         <header>
             <div class="container row">
                 <div class="fixed-left">
-                    <button class="skin-btn" type="button">WHITE MODE</button>
+                    <button class="skin-btn" type="button" onclick="modeChange(this);">BLACK MODE</button>
                 </div>
                 <div class="col-12">
                     <div class="title"><a href="index.html">Fruit Finder</a></div>
@@ -27,7 +27,7 @@
                     <div class="row">
                         <input class="search-input" type="text" placeholder="과일을 찾아보세요!" onkeypress="return pressedKeyboard();"/>
                         <div class="keywords">
-                            <button class="del-search" type="button" onclick="removeKeywords();">모든 검색어 삭제</button>
+                            <button class="del-search" type="button" onclick="return removeKeywords();">모든 검색어 삭제</button>
                         </div>
                     </div>
                 </div>
