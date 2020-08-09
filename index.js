@@ -6,33 +6,7 @@ var imgNotFound = document.querySelector('.img-not-found');
 var imgFound = document.querySelector('.img-found');
 var gallery = document.querySelector('.img-found .card-container');
 var modal = document.querySelector('.modal');
-
-/* use web storage api */
-if(typeof(Storage) !== "undefined") {
-    /* skin storage */
-    if(localStorage.getItem('skin') === undefined) { localStorage.setItem('skin', 'WHITE MODE'); }
-    var mode = localStorage.getItem('skin');
-    var skinBtn = document.querySelector('.skin-btn');
-    if(mode === 'BLACK MODE') {
-        skinBtn.innerHTML = 'WHITE MODE';
-
-        document.querySelector('html').style.backgroundColor = 'dimgrey';
-        document.querySelector('header .title a').style.color = 'white';
-
-    } else {
-        skinBtn.innerHTML = 'BLACK MODE';
-
-        document.querySelector('html').style.backgroundColor = 'white';
-        document.querySelector('header .title a').style.color = 'black';
-    }
-
-    /* keywords storage */
-    localStorage.setItem('keywords', []);
-    
-} else {
-    console.log('No Web Storage support, can`t load user setting ...');
-}
-
+var keywordsClass = document.querySelector('.keywords');
 
 window.onclick = function(event) {
     clickOutBoundModal(event);
@@ -138,12 +112,21 @@ function searchFruit() {
     var keywords = document.querySelectorAll('.prev-search');
 
     if(keywords.length === 0) {
+        localStorage.setItem('keywords', undefined);
+
         foundImage();
         gallery.innerHTML = '';
         makeCardGallery(imgLinks);
 
     } else {
         var i, j;
+
+        var words = '';
+        for(i=0; i<keywords.length; i++) {
+            words += keywords[i].innerHTML + ',';
+        }
+        localStorage.setItem('keywords', words);
+
         for(i=0; i<imgLinks.length; i++) {
             for(j=0; j<keywords.length; j++) {
                 if(imgLinks[i].title === keywords[j].innerHTML) {
@@ -174,7 +157,6 @@ function findFruit() {
     } else {
         var keyword = input.value;
         keyword = keyword.toLowerCase();
-        var keywordsClass = document.querySelector('.keywords');
 
         var html = `<button class="prev-search" type="button" onclick="deleteKeyword(this);">` + keyword + `</button>`;
         keywordsClass.innerHTML += html;
@@ -187,7 +169,8 @@ function findFruit() {
 function removeKeywords() {
     foundImage();
 
-    var keywordsClass = document.querySelector('.keywords');
+    localStorage.setItem('keywords', undefined);
+
     keywordsClass.innerHTML = '';
     keywordsClass.innerHTML += `<button class="del-search" type="button" onclick="removeKeywords();">모든 검색어 삭제</button>`;
     
@@ -347,4 +330,41 @@ function clickOutBoundModal(e) {
     if(e.target == modal) {
         modal.style.display = 'none';
     }
+}
+
+/* use web storage api */
+if(typeof(Storage) !== "undefined") {
+    /* skin storage */
+    if(localStorage.getItem('skin') === undefined) { localStorage.setItem('skin', 'WHITE MODE'); }
+    var mode = localStorage.getItem('skin');
+    var skinBtn = document.querySelector('.skin-btn');
+    if(mode === 'BLACK MODE') {
+        skinBtn.innerHTML = 'WHITE MODE';
+
+        document.querySelector('html').style.backgroundColor = 'dimgrey';
+        document.querySelector('header .title a').style.color = 'white';
+
+    } else {
+        skinBtn.innerHTML = 'BLACK MODE';
+
+        document.querySelector('html').style.backgroundColor = 'white';
+        document.querySelector('header .title a').style.color = 'black';
+    }
+
+    /* keywords storage */
+    var keywords = localStorage.getItem('keywords');
+    if(keywords.length !== 0) {
+        keywords = keywords.split(',');
+        keywords.splice(-1,1);
+
+        for(var i=0; i<keywords.length; i++) {
+            var html = `<button class="prev-search" type="button" onclick="deleteKeyword(this);">` + keywords[i] + `</button>`;
+            keywordsClass.innerHTML += html;
+        }
+
+        searchFruit();
+    }
+    
+} else {
+    console.log('No Web Storage support, can`t load user setting ...');
 }
