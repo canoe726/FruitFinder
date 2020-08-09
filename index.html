@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <div class="container row">
+                <div class="fixed-left">
+                    <button class="skin-btn" type="button">WHITE MODE</button>
+                </div>
+                <div class="col-12">
+                    <div class="title">Fruit Finder</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="search-bar">
+            <div class="search-row row">
+                <div class="left col-2">
+                    <div></div>
+                </div>
+                <div class="center col-8">
+                    <div class="row">
+                        <input class="search-input" type="text" placeholder="과일을 찾아보세요!" onkeypress="return pressedKeyboard();"/>
+                        <div class="keywords">
+                            <button class="del-search" type="button">검색어 삭제</button>
+                            <button class="prev-search" type="button">사과</button>
+                            <button class="prev-search" type="button">바나나</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="right col-2">
+                    <button class="search-btn" type="button" onclick="findFruit();"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="image-gallery">
+            <div class="card-container row">
+            </div>
+            <div class="no-image">더 이상 이미지가 없습니다</div>
+        </section>
+
+        <section class="gallery-modal">
+            <div class="modal">
+                <div class="modal-content row">
+                    <div class="title-content col-12">
+                        <div class="title">title</div>
+                        <div class="close" onclick="closeModal();"></div>
+                    </div>
+                    <div class="image-content col-12">
+                        <img src="image/apple1.jpg" alt="apple"/>
+                    </div>
+                    <div class="col-12">
+                        <div class="content1">content1</div>
+                    </div>
+                    <div class="col-12">
+                        <div class="content2">content1</div>
+                    </div>
+                    <div class="bottom-margin col-12">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="loader-container">
+            <div class="container">
+                <div class="image-loader"></div>
+            </div>
+        </section>
+
+        <footer>
+        </footer>
+        
+        <script src="index.js"></script>
+    </body>
+</html>
