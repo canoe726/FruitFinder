@@ -7,6 +7,33 @@ var imgFound = document.querySelector('.img-found');
 var gallery = document.querySelector('.img-found .card-container');
 var modal = document.querySelector('.modal');
 
+/* use web storage api */
+if(typeof(Storage) !== "undefined") {
+    /* skin storage */
+    if(localStorage.getItem('skin') === undefined) { localStorage.setItem('skin', 'WHITE MODE'); }
+    var mode = localStorage.getItem('skin');
+    var skinBtn = document.querySelector('.skin-btn');
+    if(mode === 'BLACK MODE') {
+        skinBtn.innerHTML = 'WHITE MODE';
+
+        document.querySelector('html').style.backgroundColor = 'dimgrey';
+        document.querySelector('header .title a').style.color = 'white';
+
+    } else {
+        skinBtn.innerHTML = 'BLACK MODE';
+
+        document.querySelector('html').style.backgroundColor = 'white';
+        document.querySelector('header .title a').style.color = 'black';
+    }
+
+    /* keywords storage */
+    localStorage.setItem('keywords', []);
+    
+} else {
+    console.log('No Web Storage support, can`t load user setting ...');
+}
+
+
 window.onclick = function(event) {
     clickOutBoundModal(event);
 }
@@ -16,18 +43,25 @@ getImageLinks();
 /* skin change */
 function modeChange(elem) {
     var mode = elem.innerHTML;
-
     if(mode === 'BLACK MODE') {
         elem.innerHTML = 'WHITE MODE';
         
         document.querySelector('html').style.backgroundColor = 'dimgrey';
         document.querySelector('header .title a').style.color = 'white';
 
+        if(typeof(Storage) !== "undefined") {
+            localStorage.setItem('skin', 'BLACK MODE');
+        }
+
     } else {
         elem.innerHTML = 'BLACK MODE';
 
         document.querySelector('html').style.backgroundColor = 'white';
         document.querySelector('header .title a').style.color = 'black';
+
+        if(typeof(Storage) !== "undefined") {
+            localStorage.setItem('skin', 'WHITE MODE');
+        }
     }
 }
 
@@ -139,6 +173,7 @@ function findFruit() {
     
     } else {
         var keyword = input.value;
+        keyword = keyword.toLowerCase();
         var keywordsClass = document.querySelector('.keywords');
 
         var html = `<button class="prev-search" type="button" onclick="deleteKeyword(this);">` + keyword + `</button>`;
@@ -313,8 +348,3 @@ function clickOutBoundModal(e) {
         modal.style.display = 'none';
     }
 }
-
-/* refresh web storage */
-
-
-
