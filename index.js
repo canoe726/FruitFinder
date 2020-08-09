@@ -5,6 +5,7 @@ var loader = document.querySelector('.loader-container');
 var imgNotFound = document.querySelector('.img-not-found');
 var imgFound = document.querySelector('.img-found');
 var gallery = document.querySelector('.img-found .card-container');
+var modal = document.querySelector('.modal');
 
 window.onclick = function(event) {
     clickOutBoundModal(event);
@@ -12,23 +13,25 @@ window.onclick = function(event) {
 
 getImageLinks();
 
+/* skin change */
 function modeChange(elem) {
-    console.log(elem.innerHTML);
-
     var mode = elem.innerHTML;
 
     if(mode === 'BLACK MODE') {
         elem.innerHTML = 'WHITE MODE';
         
         document.querySelector('html').style.backgroundColor = 'dimgrey';
+        document.querySelector('header .title a').style.color = 'white';
 
     } else {
         elem.innerHTML = 'BLACK MODE';
 
         document.querySelector('html').style.backgroundColor = 'white';
+        document.querySelector('header .title a').style.color = 'black';
     }
 }
 
+/* make card gallery */
 function shuffle(array) {
     var ret = array;
 
@@ -278,8 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* modal */
-var modal = document.querySelector('.modal');
-
 function showModal(elem) {
     modal.style.display = 'block';
 
@@ -312,10 +313,6 @@ function clickOutBoundModal(e) {
         modal.style.display = 'none';
     }
 }
-
-
-
-
 
 /* refresh web storage */
 

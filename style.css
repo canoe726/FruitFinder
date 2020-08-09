@@ -109,7 +109,7 @@ header .container {
 
 .keywords .del-search {
     border: 3px solid orangered;
-    background-color: transparent;
+    background-color: white;
     color: black;
     font-size: 11px;
     transition: ease 0.5s;
@@ -179,10 +179,16 @@ header .container {
 }
 
 .card-container .card img {
+    background-color: white;
+    border-radius: 15px;
     cursor: pointer;
     width: 320px;
     height: 320px;
     object-fit: scale-down;
+}
+
+.card-container .card .content {
+    padding: 8px;
 }
 
 .card-container .card .title {
