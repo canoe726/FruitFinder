@@ -51,6 +51,7 @@ header .container {
 }
 
 .skin-btn {
+    font-size: 8px;
     cursor: pointer;
     border: 2px solid orangered;
     border-radius: 5px;
@@ -75,7 +76,7 @@ header .container {
 
 .search-row .left::before {
     content: '\01F34E';
-    font-size: 38px;
+    font-size: 28px;
 }
 
 .search-btn {
@@ -87,7 +88,7 @@ header .container {
 
 .search-btn::before {
     content: '\01F30F';
-    font-size: 38px;
+    font-size: 28px;
 }
 
 .search-input {
@@ -103,7 +104,7 @@ header .container {
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
-    margin-right: 8px;
+    margin: 8px 8px 0 0;
     color: white;
 }
 
@@ -188,7 +189,7 @@ header .container {
 }
 
 .card-container .card .content {
-    padding: 8px;
+    padding: 8px 24px 8px 24px;
 }
 
 .card-container .card .title {
@@ -330,5 +331,20 @@ footer {
 .col-12 {width: 100%;}
 
 @media screen and (min-width: 576px) {
+    .skin-btn {
+        font-size: 14px;
+    }
+
+    .search-row .left::before {
+        font-size: 38px;
+    }
+    
+    .search-btn::before {
+        font-size: 38px;
+    }
+
+    .card-container .card .content {
+        padding: 8px;
+    }
 
 }
