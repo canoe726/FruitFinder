@@ -1,9 +1,15 @@
+var imgLinksIdx = 8;
+var imgLinks = [];
+var searchLinks = [];
+var no_image_text = document.querySelector('.no-image');
+var loader = document.querySelector('.loader-container');
+var imgNotFound = document.querySelector('.img-not-found');
+var imgFound = document.querySelector('.img-found');
+
 window.onclick = function(event) {
     clickOutBoundModal(event);
 }
 
-var imgLinksIdx = 8;
-var imgLinks = [];
 getImageLinks();
 
 function shuffle(array) {
@@ -37,17 +43,19 @@ function getImageLinks() {
     imgLinks = shuffle(imgLinks);
 }
 
-makeCardGallery();
-function makeCardGallery() {
+makeCardGallery(imgLinks);
+function makeCardGallery(img) {
+    var imgIdx = 8;
+
     var gallery = document.querySelector('.img-found .card-container');
     var i;
-    for(i=0; i<imgLinksIdx; i++) {
+    for(i=0; i<imgIdx; i++) {
         var html = `
         <div class="card">
-            <img onclick="showModal(this);" src="` + imgLinks[i].link + `" alt="` + imgLinks[i].desc + `"/>
+            <img onclick="showModal(this);" src="` + img[i].link + `" alt="` + img[i].desc + `"/>
             <article class="content">
-                <div class="title">` + imgLinks[i].title + `</div>
-                <div class="desc">` + imgLinks[i].desc + `</div>
+                <div class="title">` + img[i].title + `</div>
+                <div class="desc">` + img[i].desc + `</div>
             </article>
         </div>
         `;
@@ -62,15 +70,86 @@ function pressedKeyboard() {
     }
 }
 
+function deleteKeyword() { 
+    alert('delete');
+}
+
+function searchFruit() {
+    searchLinks = [];
+
+    no_image_text.style.display = 'none';
+
+    var keywords = document.querySelectorAll('.prev-search');
+
+    var i, j;
+    for(i=0; i<imgLinks.length; i++) {
+        for(j=0; j<keywords.length; j++) {
+            if(imgLinks[i].title === keywords[j].innerHTML) {
+                searchLinks.push(imgLinks[i]);
+            }
+        }
+    }
+
+    if(searchLinks.length === 0) {
+        notFoundImage();
+
+    } else {
+        loader.style.display = 'block';
+
+        var gallery = document.querySelector('.img-found .card-container');
+        gallery.innerHTML = '';
+        makeCardGallery(searchLinks);
+
+        loader.style.display = 'none';
+    }
+}
+
 function findFruit() {
     var input = document.querySelector('.search-input');
     if(input.value === '') {
         alert('검색어를 입력하세요!');
+    
     } else {
-        alert('search');
+        var keyword = input.value;
+        var keywordsClass = document.querySelector('.keywords');
+
+        var html = `<button class="prev-search" type="button" onclick="deleteKeyword(this);">` + keyword + `</button>`;
+        keywordsClass.innerHTML += html;
+        input.value = '';
+
+        searchFruit();
     }
 }
 
+function removeKeywords() {
+    foundImage();
+
+    var keywordsClass = document.querySelector('.keywords');
+    keywordsClass.innerHTML = '';
+    keywordsClass.innerHTML += `<button class="del-search" type="button" onclick="removeKeywords();">검색어 삭제</button>`;
+    
+    var gallery = document.querySelector('.img-found .card-container');
+    gallery.innerHTML = '';
+    makeCardGallery(imgLinks);
+}
+
+/* search error handling */
+function notFoundImage() {
+    imgNotFound.style.display = 'block';
+    
+    imgFound.style.display = 'none';
+}
+
+function foundImage() {
+    no_image_text.style.display = 'none';
+
+    imgNotFound.style.display = 'none';
+    
+    imgFound.style.display = 'block';
+}
+
+
+/* infinite scroll, lazy loading */
 function getScrollTop() {
     return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 }
@@ -85,11 +164,6 @@ function getDocumentHeight() {
     );
 }
 
-/* search error handling */
-
-
-
-/* infinite scroll, lazy loading */
 document.addEventListener('DOMContentLoaded', function() {
     var lazyLoadTimeOut;
 
@@ -104,27 +178,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         lazyLoadTimeOut = setTimeout(function() {
-            var loader = document.querySelector('.loader-container');
             loader.style.display = 'block';
 
             var scrollTop = getScrollTop();
             var documentHeight = getDocumentHeight();
             var checkHeight = documentHeight - window.innerHeight - 100;
 
-            console.log('scrollTop : ', scrollTop);
-            console.log('checkHeight : ', checkHeight);
-
-            if(imgLinksIdx === imgLinks.length) {
-                var no_image_text = document.querySelector('.no-image');
-                no_image_text.style.display = 'block';
-                loader.style.display = 'none';
-                return false;
-            }
-
             if(scrollTop >= checkHeight) {
-                if(imgLinksIdx + 4 < imgLinks.length) {
-                    var newIdx = imgLinksIdx + 4;
-                    for(var i=imgLinksIdx; i<newIdx; i++) {
+                var isSearched = document.querySelectorAll('.prev-search');
+                var cardLength = document.querySelectorAll('.card').length;
+                
+                if(isSearched.length > 0) {
+                    if(cardLength === searchLinks.length) {
+                        no_image_text.style.display = 'block';
+                        loader.style.display = 'none';
+                        return false;
+                    }
+                    
+                    var newIdx;
+                    if(cardLength + 4 < searchLinks.length) {
+                        newIdx = cardLength + 4;
+                    } else {
+                        newIdx = searchLinks.length;
+                    }
+
+                    for(var i=cardLength; i<newIdx; i++) {
+                        var gallery = document.querySelector('.card-container');
+                        var html = `
+                        <div class="card">
+                            <img onclick="showModal(this);" src="` + searchLinks[i].link + `" alt="` + imgLinks[i].desc + `"/>
+                            <article class="content">
+                                <div class="title">` + searchLinks[i].title + `</div>
+                                <div class="desc">` + searchLinks[i].desc + `</div>
+                            </article>
+                        </div>
+                        `;
+                        gallery.innerHTML += html;
+                    }
+
+                } else {
+                    if(cardLength === imgLinks.length) {
+                        no_image_text.style.display = 'block';
+                        loader.style.display = 'none';
+                        return false;
+                    }
+
+                    var newIdx;
+                    if(cardLength + 4 < imgLinks.length) {
+                        newIdx = cardLength + 4;
+                    } else {
+                        newIdx = imgLinks.length;
+                    }
+
+                    for(var i=cardLength; i<newIdx; i++) {
                         var gallery = document.querySelector('.card-container');
                         var html = `
                         <div class="card">
@@ -137,10 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         `;
                         gallery.innerHTML += html;
                     }
-                    imgLinksIdx = newIdx;
-        
-                } else {
-                    imgLinksIdx = imgLinks.length;
                 }
             }
             loader.style.display = 'none';
